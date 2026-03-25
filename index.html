@@ -56,7 +56,6 @@ font-weight:bold;
 color:#16a34a;
 }
 
-/* FORM */
 form{
 background:#f5f5f5;
 margin:20px auto;
@@ -66,6 +65,7 @@ max-width:400px;
 display:flex;
 flex-direction:column;
 gap:10px;
+align-items:center;
 }
 
 input,select,button{
@@ -118,25 +118,20 @@ z-index:1000;
 
 .whatsapp img{
 width:32px;
-height:32px;
 }
 </style>
 
 <script>
-// paiement
+// PAYMENT DISPLAY
 function showPayment(){
 let method=document.getElementById("payment").value;
-document.getElementById("paypal").style.display="none";
-document.getElementById("momo").style.display="none";
-document.getElementById("orange").style.display="none";
-document.getElementById("card").style.display="none";
-if(method=="paypal") document.getElementById("paypal").style.display="block";
-if(method=="momo") document.getElementById("momo").style.display="block";
-if(method=="orange") document.getElementById("orange").style.display="block";
-if(method=="card") document.getElementById("card").style.display="block";
+["paypal","momo","orange","card"].forEach(id=>{
+document.getElementById(id).style.display="none";
+});
+if(method) document.getElementById(method).style.display="block";
 }
 
-// langue
+// LANGUAGE
 function setLang(lang){
 localStorage.setItem("lang",lang);
 applyLang();
@@ -149,26 +144,92 @@ if(lang.startsWith("fr")){
 document.getElementById("title").innerText="Nous achetons vos cartes cadeaux instantanément";
 document.getElementById("clients").innerText="Plus de 1500 clients satisfaits";
 document.getElementById("sell").innerText="Vendre ma carte";
-document.getElementById("btn").innerText="Vendre";
-}
-else{
+document.getElementById("btn").innerText="Envoyer";
+document.getElementById("commission").innerText="10% de commission";
+document.getElementById("downloadBtn").innerText="Télécharger l'application";
+document.getElementById("footerText").innerText="Support WhatsApp : +13434473483";
+
+document.getElementById("name").placeholder="Nom";
+document.getElementById("firstname").placeholder="Prénom";
+document.getElementById("email").placeholder="Email";
+document.getElementById("value").placeholder="Valeur de la carte";
+
+document.getElementById("payment").options[0].text="Choisir méthode de paiement";
+document.getElementById("payment").options[1].text="PayPal";
+document.getElementById("payment").options[2].text="MoMo";
+document.getElementById("payment").options[3].text="Orange Money";
+document.getElementById("payment").options[4].text="Carte bancaire";
+
+document.getElementById("paypalInput").placeholder="Lien PayPal";
+document.getElementById("momoInput").placeholder="Numéro MoMo";
+document.getElementById("orangeInput").placeholder="Numéro Orange Money";
+document.getElementById("cardInput").placeholder="Numéro carte bancaire";
+
+document.getElementById("uploadLabel").innerText="Télécharger la photo de la carte";
+
+}else{
 document.getElementById("title").innerText="We buy your gift cards instantly";
 document.getElementById("clients").innerText="Over 1500 satisfied clients";
 document.getElementById("sell").innerText="Sell my gift card";
-document.getElementById("btn").innerText="Sell";
+document.getElementById("btn").innerText="Send";
+document.getElementById("commission").innerText="10% commission";
+document.getElementById("downloadBtn").innerText="Download App";
+document.getElementById("footerText").innerText="WhatsApp customer support : +13434473483";
+
+document.getElementById("name").placeholder="Name";
+document.getElementById("firstname").placeholder="First name";
+document.getElementById("email").placeholder="Email";
+document.getElementById("value").placeholder="Card value";
+
+document.getElementById("payment").options[0].text="Choose payment method";
+document.getElementById("payment").options[1].text="PayPal";
+document.getElementById("payment").options[2].text="MoMo";
+document.getElementById("payment").options[3].text="Orange Money";
+document.getElementById("payment").options[4].text="Bank card";
+
+document.getElementById("paypalInput").placeholder="PayPal payment link";
+document.getElementById("momoInput").placeholder="MoMo number";
+document.getElementById("orangeInput").placeholder="Orange Money number";
+document.getElementById("cardInput").placeholder="Bank card number";
+
+document.getElementById("uploadLabel").innerText="Upload gift card photo";
 }
+}
+
+// WHATSAPP SEND
+function sendWhatsApp(){
+let lang = localStorage.getItem("lang") || "en";
+
+let name=document.getElementById("name").value;
+let firstname=document.getElementById("firstname").value;
+let email=document.getElementById("email").value;
+let value=document.getElementById("value").value;
+let payment=document.getElementById("payment").value;
+
+let paymentInfo="";
+if(payment=="paypal") paymentInfo=document.getElementById("paypalInput").value;
+if(payment=="momo") paymentInfo=document.getElementById("momoInput").value;
+if(payment=="orange") paymentInfo=document.getElementById("orangeInput").value;
+if(payment=="card") paymentInfo=document.getElementById("cardInput").value;
+
+let msg="";
+if(lang.startsWith("fr")){
+msg=`Nom: ${name}%0APrénom: ${firstname}%0AEmail: ${email}%0AValeur: ${value}%0APaiement: ${payment}%0ADétail: ${paymentInfo}%0A%0AEnvoyez la photo de la carte ici`;
+}else{
+msg=`Name: ${name}%0AFirst name: ${firstname}%0AEmail: ${email}%0ACard value: ${value}%0APayment: ${payment}%0ADetail: ${paymentInfo}%0A%0ASend the gift card photo here`;
+}
+
+window.open("https://wa.me/13434473483?text="+msg,"_blank");
 }
 
 window.onload=applyLang;
 </script>
-
 </head>
 
 <body>
 
 <header>
 <span>CardCash Agency Instant</span>
-
 <div class="lang">
 <img src="https://flagcdn.com/w40/fr.png" onclick="setLang('fr')">
 <img src="https://flagcdn.com/w40/gb.png" onclick="setLang('en')">
@@ -177,7 +238,7 @@ window.onload=applyLang;
 
 <h1 id="title">We buy your gift cards instantly</h1>
 
-<a class="download" href="app.apk" download>Download App</a>
+<a class="download" id="downloadBtn" href="app.apk" download>Download App</a>
 
 <div class="cards">
 <img src="https://upload.wikimedia.org/wikipedia/commons/a/a9/Amazon_logo.svg">
@@ -189,17 +250,15 @@ window.onload=applyLang;
 <div class="counter" id="clients">Over 1500 satisfied clients</div>
 
 <h2 id="sell">Sell my gift card</h2>
-<p>10% commission</p>
+<p id="commission">10% commission</p>
 
-<form action="https://formspree.io/f/xreyepdr" method="POST">
-<input type="hidden" name="_captcha" value="false">
+<form>
+<input type="text" id="name" required>
+<input type="text" id="firstname" required>
+<input type="email" id="email" required>
+<input type="number" id="value" required>
 
-<input type="text" name="name" placeholder="Name" required>
-<input type="text" name="firstname" placeholder="First name" required>
-<input type="email" name="email" placeholder="Email" required>
-<input type="number" name="value" placeholder="Card value" required>
-
-<select name="payment" id="payment" onchange="showPayment()" required>
+<select id="payment" onchange="showPayment()" required>
 <option value="">Choose payment method</option>
 <option value="paypal">PayPal</option>
 <option value="momo">MoMo</option>
@@ -207,20 +266,20 @@ window.onload=applyLang;
 <option value="card">Bank card</option>
 </select>
 
-<div id="paypal" style="display:none"><input type="text" name="paypal" placeholder="PayPal payment link"></div>
-<div id="momo" style="display:none"><input type="text" name="momo" placeholder="MoMo number"></div>
-<div id="orange" style="display:none"><input type="text" name="orange" placeholder="Orange Money number"></div>
-<div id="card" style="display:none"><input type="text" name="card" placeholder="Bank card number"></div>
+<div id="paypal" style="display:none"><input type="text" id="paypalInput"></div>
+<div id="momo" style="display:none"><input type="text" id="momoInput"></div>
+<div id="orange" style="display:none"><input type="text" id="orangeInput"></div>
+<div id="card" style="display:none"><input type="text" id="cardInput"></div>
 
 <div class="upload">
-⚠️ Envoyez la photo via WhatsApp après soumission
-<input type="file" disabled>
+<label id="uploadLabel">Upload gift card photo</label>
+<input type="file" accept="image/*" capture="environment">
 </div>
 
-<button type="submit" id="btn">Sell</button>
+<button type="button" id="btn" onclick="sendWhatsApp()">Send</button>
 </form>
 
-<footer>WhatsApp customer support : +13434473483</footer>
+<footer id="footerText">WhatsApp customer support : +13434473483</footer>
 
 <a class="whatsapp" href="https://wa.me/13434473483">
 <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg">
